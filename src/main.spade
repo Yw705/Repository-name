@@ -1,0 +1,129 @@
+mod mix_columns;
+mod sbox;
+mod shift_rows;
+mod round_key;
+mod xor;
+
+fn encrypt(block: [uint<8>; 16], key: [uint<8>; 16]) -> [uint<8>; 16] {
+    // round 0
+    // add round key
+    let block = xor::xor(block, key);
+    // sub bytes
+    let block = sbox::sub_all(block);
+    // shift rows
+    let block = shift_rows::shift_rows(block);
+    // mix columns
+    let block = mix_columns::mix_columns(block);
+
+    // round 1
+    // add round key
+    let key = round_key::next(key, 0x1);
+    let block = xor::xor(block, key);
+    // sub bytes
+    let block = sbox::sub_all(block);
+    // shift rows
+    let block = shift_rows::shift_rows(block);
+    // mix columns
+    let block = mix_columns::mix_columns(block);
+
+    // round 2
+    // add round key
+    let key = round_key::next(key, 0x2);
+    let block = xor::xor(block, key);
+    // sub bytes
+    let block = sbox::sub_all(block);
+    // shift rows
+    let block = shift_rows::shift_rows(block);
+    // mix columns
+    let block = mix_columns::mix_columns(block);
+
+    // round 3
+    // add round key
+    let key = round_key::next(key, 0x4);
+    let block = xor::xor(block, key);
+    // sub bytes
+    let block = sbox::sub_all(block);
+    // shift rows
+    let block = shift_rows::shift_rows(block);
+    // mix columns
+    let block = mix_columns::mix_columns(block);
+
+    // round 4
+    // add round key
+    let key = round_key::next(key, 0x8);
+    let block = xor::xor(block, key);
+    // sub bytes
+    let block = sbox::sub_all(block);
+    // shift rows
+    let block = shift_rows::shift_rows(block);
+    // mix columns
+    let block = mix_columns::mix_columns(block);
+
+    // round 5
+    // add round key
+    let key = round_key::next(key, 0x10);
+    let block = xor::xor(block, key);
+    // sub bytes
+    let block = sbox::sub_all(block);
+    // shift rows
+    let block = shift_rows::shift_rows(block);
+    // mix columns
+    let block = mix_columns::mix_columns(block);
+
+    // round 6
+    // add round key
+    let key = round_key::next(key, 0x20);
+    let block = xor::xor(block, key);
+    // sub bytes
+    let block = sbox::sub_all(block);
+    // shift rows
+    let block = shift_rows::shift_rows(block);
+    // mix columns
+    let block = mix_columns::mix_columns(block);
+
+    // round 7
+    // add round key
+    let key = round_key::next(key, 0x40);
+    let block = xor::xor(block, key);
+    // sub bytes
+    let block = sbox::sub_all(block);
+    // shift rows
+    let block = shift_rows::shift_rows(block);
+    // mix columns
+    let block = mix_columns::mix_columns(block);
+
+    // round 8
+    // add round key
+    let key = round_key::next(key, 0x80);
+    let block = xor::xor(block, key);
+    // sub bytes
+    let block = sbox::sub_all(block);
+    // shift rows
+    let block = shift_rows::shift_rows(block);
+    // mix columns
+    let block = mix_columns::mix_columns(block);
+
+    // round 9
+    // add round key
+    let key = round_key::next(key, 0x1B);
+    let block = xor::xor(block, key);
+    // sub bytes
+    let block = sbox::sub_all(block);
+    // shift rows
+    let block = shift_rows::shift_rows(block);
+    // mix columns
+    let block = mix_columns::mix_columns(block);
+
+    // round 10
+    // add round key
+    let key = round_key::next(key, 0x36);
+    let block = xor::xor(block, key);
+    // sub bytes
+    let block = sbox::sub_all(block);
+    // shift rows
+    let block = shift_rows::shift_rows(block);
+    // mix columns
+    let block = mix_columns::mix_columns(block);
+
+    block
+}

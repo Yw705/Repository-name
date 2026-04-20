@@ -1,0 +1,18 @@
+name = "tangnano9k"
+
+[synthesis]
+command = "synth_gowin"
+top = "top"
+
+[pnr]
+architecture = "gowin"
+device."GW2AR-LV18QN88C8/I7" = {family = "GW2A-18C"}
+pin_file = "tangnano20k.cst"
+
+[packing]
+tool = "gowin_pack"
+device = "GW2AR-LV18QN88C8/I7"
+
+[upload]
+tool = "openFPGALoader"
+board = "tangnano20k"

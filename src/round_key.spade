@@ -1,0 +1,56 @@
+use tangnano9k::sbox::sbox;
+
+pub fn next(last_key: [uint<8>; 16], rcon: uint<8>) -> [uint<8>; 16] {
+    let a = (
+        last_key[0].to_bits() `std::conv::concat_arrays`
+        last_key[1].to_bits() `std::conv::concat_arrays`
+        last_key[2].to_bits() `std::conv::concat_arrays`
+        last_key[3].to_bits()
+    ).to_uint();
+
+    let b = (
+        last_key[4].to_bits() `std::conv::concat_arrays`
+        last_key[5].to_bits() `std::conv::concat_arrays`
+        last_key[6].to_bits() `std::conv::concat_arrays`
+        last_key[7].to_bits()
+    ).to_uint();
+
+    let c = (
+        last_key[8].to_bits() `std::conv::concat_arrays`
+        last_key[9].to_bits() `std::conv::concat_arrays`
+        last_key[10].to_bits() `std::conv::concat_arrays`
+        last_key[11].to_bits()
+    ).to_uint();
+
+    let d = (
+        last_key[12].to_bits() `std::conv::concat_arrays`
+        last_key[13].to_bits() `std::conv::concat_arrays`
+        last_key[14].to_bits() `std::conv::concat_arrays`
+        last_key[15].to_bits()
+    ).to_uint();
+
+    let new_a = a ^ (
+        (sbox(last_key[13]) ^ rcon).to_bits() `std::conv::concat_arrays`
+        sbox(last_key[14]).to_bits() `std::conv::concat_arrays`
+        sbox(last_key[15]).to_bits() `std::conv::concat_arrays`
+        sbox(last_key[12]).to_bits()
+    ).to_uint();
+    
+    let new_b = b ^ new_a;
+    let new_c = c ^ new_b;
+    let new_d = d ^ new_c;
+
+    let new_a_bits = new_a.to_bits();
+    let new_b_bits = new_b.to_bits();
+    let new_c_bits = new_c.to_bits();
+    let new_d_bits = new_d.to_bits();
+
+    [
+        new_a_bits[0..8].to_uint(), new_a_bits[8..16].to_uint(), new_a_bits[16..24].to_uint(), new_a_bits[24..32].to_uint(),
+        new_b_bits[0..8].to_uint(), new_b_bits[8..16].to_uint(), new_b_bits[16..24].to_uint(), new_b_bits[24..32].to_uint(),
+        new_c_bits[0..8].to_uint(), new_c_bits[8..16].to_uint(), new_c_bits[16..24].to_uint(), new_c_bits[24..32].to_uint(),
+        new_d_bits[0..8].to_uint(), new_d_bits[8..16].to_uint(), new_d_bits[16..24].to_uint(), new_d_bits[24..32].to_uint(),
+    ]
+    
+}
+

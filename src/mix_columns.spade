@@ -1,0 +1,57 @@
+pub fn mix_columns(block: [uint<8>; 16]) -> [uint<8>; 16] {
+    let a = (
+        block[0].to_bits() `std::conv::concat_arrays`
+        block[4].to_bits() `std::conv::concat_arrays`
+        block[8].to_bits() `std::conv::concat_arrays`
+        block[12].to_bits()
+    ).to_uint();
+
+    let b = (
+        block[1].to_bits() `std::conv::concat_arrays`
+        block[5].to_bits() `std::conv::concat_arrays`
+        block[9].to_bits() `std::conv::concat_arrays`
+        block[13].to_bits()
+    ).to_uint();
+
+    
+    let c = (
+        block[2].to_bits() `std::conv::concat_arrays`
+        block[6].to_bits() `std::conv::concat_arrays`
+        block[10].to_bits() `std::conv::concat_arrays`
+        block[14].to_bits()
+    ).to_uint();
+    
+    let d = (
+        block[3].to_bits() `std::conv::concat_arrays`
+        block[7].to_bits() `std::conv::concat_arrays`
+        block[11].to_bits() `std::conv::concat_arrays`
+        block[15].to_bits()
+    ).to_uint();
+    
+    let _2a = a << 1;
+    let _2b = b << 1;
+    let _2c = c << 1;
+    let _2d = d << 1;
+
+    let _3a: uint<32> = trunc(_2a + a);
+    let _3b: uint<32> = trunc(_2b + b);
+    let _3c: uint<32> = trunc(_2c + c);
+    let _3d: uint<32> = trunc(_2d + d);
+    
+    let a_prime = _2a ^ _3b ^   c ^   d;
+    let b_prime =   a ^ _2b ^ _3c ^   d;
+    let c_prime =   a ^   b ^ _2c ^ _3d;
+    let d_prime = _3a ^   b ^   c ^ _2d;
+
+    let a_prime_bits = a_prime.to_bits();
+    let b_prime_bits = b_prime.to_bits();
+    let c_prime_bits = c_prime.to_bits();
+    let d_prime_bits = d_prime.to_bits();
+
+    [
+        a_prime_bits[0 ..8 ].to_uint(), b_prime_bits[0 ..8 ].to_uint(), c_prime_bits[0 ..8 ].to_uint(), d_prime_bits[0 ..8 ].to_uint(),
+        b_prime_bits[8 ..16].to_uint(), b_prime_bits[8 ..16].to_uint(), c_prime_bits[8 ..16].to_uint(), d_prime_bits[8 ..16].to_uint(),
+        c_prime_bits[16..24].to_uint(), b_prime_bits[16..24].to_uint(), c_prime_bits[16..24].to_uint(), d_prime_bits[16..24].to_uint(),
+        d_prime_bits[24..32].to_uint(), b_prime_bits[24..32].to_uint(), c_prime_bits[24..32].to_uint(), d_prime_bits[24..32].to_uint(),
+    ]
+}
